@@ -2519,13 +2519,14 @@ char *aircraftsToJson(int *len) {
             speed *= 1.852;
         }
 
-        if (a->lat != 0 && a->lon != 0) {
+        {
+            int has_position = (a->lat != 0 || a->lon != 0);
             l = snprintf(p,buflen,
                 "{\"hex\":\"%s\", \"flight\":\"%s\", \"lat\":%f, "
                 "\"lon\":%f, \"altitude\":%d, \"track\":%d, "
-                "\"speed\":%d},\n",
+                "\"speed\":%d, \"has_position\":%s},\n",
                 a->hexaddr, a->flight, a->lat, a->lon, altitude, a->track,
-                speed);
+                speed, has_position ? "true" : "false");
             p += l; buflen -= l;
             /* Resize if needed. */
             if (buflen < 256) {
